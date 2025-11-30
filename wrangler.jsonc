@@ -1,5 +1,5 @@
 {
-  "name": "artesano-costa-rica-landing",
+  "name": "artesano-costa-rica-lp",
   "compatibility_date": "2025-11-30", // Update to the day you deploy
   "pages_build_output_dir": "./dist"
 }
