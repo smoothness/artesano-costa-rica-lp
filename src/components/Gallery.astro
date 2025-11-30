@@ -1,0 +1,138 @@
+---
+import { getImage } from 'astro:assets';
+
+// Import all gallery images
+import gallery00 from '../assets/gallery/gallery-00.jpg';
+import gallery01 from '../assets/gallery/gallery-01.jpg';
+import gallery02 from '../assets/gallery/gallery-02.jpg';
+import gallery03 from '../assets/gallery/gallery-03.jpg';
+import gallery04 from '../assets/gallery/gallery-04.jpg';
+import gallery05 from '../assets/gallery/gallery-05.jpg';
+import gallery06 from '../assets/gallery/gallery-06.jpg';
+
+const images = [
+  gallery00,
+  gallery02,
+  gallery01,
+  gallery04,
+  gallery03,
+  gallery05,
+  gallery06,
+];
+---
+
+<section id="gallery" class="w-screen bg-black">
+  <div class="masonry-grid">
+    {images.map((image, index) => (
+      <div class="masonry-item">
+        <img 
+          src={image.src} 
+          alt={`Gallery image ${index + 1}`}
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .masonry-grid {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .masonry-item {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .masonry-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Mobile: Single column layout */
+  @media (max-width: 768px) {
+    .masonry-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+      gap: 1px;
+    }
+    
+    .masonry-item img {
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  /* Tablet and up: Masonry layout with CSS Grid */
+  @media (min-width: 769px) {
+    .masonry-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: 10px;
+      gap: 1px;
+    }
+    
+    .masonry-item {
+      grid-column: span 2;
+    }
+    
+    /* Horizontal images span 4 columns (double width) */
+    .masonry-item.horizontal {
+      grid-column: span 4;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+</style>
+
+<script>
+  // Detect horizontal images and calculate row spans
+  function setupMasonry() {
+    const items = document.querySelectorAll('.masonry-item');
+    
+    items.forEach((item) => {
+      const img = item.querySelector('img');
+      if (!img) return;
+      
+      const processImage = () => {
+        // Add horizontal class if wider than tall
+        if (img.naturalWidth > img.naturalHeight) {
+          item.classList.add('horizontal');
+        }
+        
+        // Calculate row span for masonry effect
+        if (window.innerWidth > 768) {
+          const height = img.getBoundingClientRect().height;
+          const rowSpan = Math.ceil((height + 1) / 11);
+          item.style.gridRowEnd = `span ${rowSpan}`;
+        }
+      };
+      
+      if (img.complete) {
+        processImage();
+      } else {
+        img.addEventListener('load', processImage);
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', setupMasonry);
+  
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(setupMasonry, 100);
+  });
+</script>

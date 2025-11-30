@@ -1,0 +1,46 @@
+<section id="form" class="w-screen h-screen flex justify-center items-center flex-col gap-8">
+  <div class="text-center px-8">
+    <h2 class="text-4xl mb-2">Info?</h2>
+    <p class="max-w-2xl">Estamos tomando pedidos para la próxima producción, si tiene interés en algún producto, o tiene alguna consulta, puede enviarnos un mensaje y le responderemos a la brevedad.</p>
+  </div>
+  <form id="landing-form" action="https://formgrid.dev/api/f/gtu464zm" method="POST" class="flex flex-col gap-4 w-full max-w-lg px-8">
+    <div>
+      <label for="name" class="block mb-2">Nombre</label>
+      <input type="text" id="name" name="name" placeholder="Su nombre" required class="w-full border border-[#e8e8e8] px-3 py-2">
+    </div>
+    <div>
+      <label for="email" class="block mb-2">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="Su correo electrónico" required class="w-full border border-[#e8e8e8] px-3 py-2">
+    </div>
+    <div>
+      <label for="message" class="block mb-2">Mensaje</label>
+      <textarea id="message" name="message" placeholder="Su mensaje" required class="w-full border border-[#e8e8e8] px-3 py-2 min-h-32"></textarea>
+    </div>
+    <button type="submit" class="bg-[#4c4c4c] text-white uppercase px-6 py-3 mt-2 cursor-pointer border-2 border-[#4c4c4c] transition-all duration-300 hover:bg-white hover:text-[#4c4c4c]">Enviar</button>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById('landing-form') as HTMLFormElement;
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('https://formgrid.dev/api/f/gtu464zm', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                alert('Form submitted successfully!');
+                form.reset();
+            }
+        } catch (error) {
+            alert('Error submitting form');
+        }
+    });
+  }
+</script>

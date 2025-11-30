@@ -1,0 +1,28 @@
+---
+import artesanoLogo from '../assets/artesano-logo.svg';
+---
+
+<header class="fixed top-0 left-0 w-full z-20 md:block flex justify-center">
+  <img id="header-logo" class="w-46 md:w-60 p-8 transition-all duration-500" src={artesanoLogo.src} alt="Artesano Logo">
+</header>
+
+<script>
+  const logo = document.getElementById('header-logo');
+  const formSection = document.getElementById('form');
+
+  if (logo && formSection) {
+    const handleScroll = () => {
+      const formRect = formSection.getBoundingClientRect();
+      const isInFormSection = formRect.top <= window.innerHeight / 2 && formRect.bottom >= window.innerHeight / 2;
+      
+      if (isInFormSection) {
+        logo.style.filter = 'invert(1)';
+      } else {
+        logo.style.filter = 'invert(0)';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+  }
+</script>
